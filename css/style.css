@@ -1,0 +1,18 @@
+@charset "utf-8";
+body {
+	background-color:#F8E2C6;
+}
+.section-heading {
+	background-color: #F0CAA4;
+	color:#000000;
+	font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Black", sans-serif;
+}
+h2 {
+	font-size: 3em;
+	color: #050505;
+	font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Black", sans-serif;
+}
+#canvas {
+	background-color: #EB935F;
+	color: #FFFFFF;
+}

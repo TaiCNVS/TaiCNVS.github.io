@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Untitled Document</title>
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+    
+    <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+	<script src="js/BANNER2.js"></script>
+	<script>
+var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+function init() {
+	canvas = document.getElementById("canvas");
+	anim_container = document.getElementById("animation_container");
+	dom_overlay_container = document.getElementById("dom_overlay_container");
+	images = images||{};
+	var loader = new createjs.LoadQueue(false);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.loadManifest(lib.properties.manifest);
+}
+function handleFileLoad(evt) {	
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }	
+}
+function handleComplete(evt) {
+	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+	var queue = evt.target;
+	var ssMetadata = lib.ssMetadata;
+	for(i=0; i<ssMetadata.length; i++) {
+		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+	}
+	exportRoot = new lib.Untitled1();
+	stage = new createjs.Stage(canvas);
+	stage.addChild(exportRoot);	
+	//Registers the "tick" event listener.
+	fnStartAnimation = function() {
+		createjs.Ticker.setFPS(lib.properties.fps);
+		createjs.Ticker.addEventListener("tick", stage);
+	}	    
+	//Code to support hidpi screens and responsive scaling.
+	function makeResponsive(isResp, respDim, isScale, scaleType) {		
+		var lastW, lastH, lastS=1;		
+		window.addEventListener('resize', resizeCanvas);		
+		resizeCanvas();		
+		function resizeCanvas() {			
+			var w = lib.properties.width, h = lib.properties.height;			
+			var iw = window.innerWidth, ih=window.innerHeight;			
+			var pRatio = window.devicePixelRatio || 1, xRatio=iw/w, yRatio=ih/h, sRatio=1;			
+			if(isResp) {                
+				if((respDim=='width'&&lastW==iw) || (respDim=='height'&&lastH==ih)) {                    
+					sRatio = lastS;                
+				}				
+				else if(!isScale) {					
+					if(iw<w || ih<h)						
+						sRatio = Math.min(xRatio, yRatio);				
+				}				
+				else if(scaleType==1) {					
+					sRatio = Math.min(xRatio, yRatio);				
+				}				
+				else if(scaleType==2) {					
+					sRatio = Math.max(xRatio, yRatio);				
+				}			
+			}			
+			canvas.width = w*pRatio*sRatio;			
+			canvas.height = h*pRatio*sRatio;
+			canvas.style.width = dom_overlay_container.style.width = anim_container.style.width =  w*sRatio+'px';				
+			canvas.style.height = anim_container.style.height = dom_overlay_container.style.height = h*sRatio+'px';
+			stage.scaleX = pRatio*sRatio;			
+			stage.scaleY = pRatio*sRatio;			
+			lastW = iw; lastH = ih; lastS = sRatio;		
+		}
+	}
+	makeResponsive(true,'both',false,1);	
+	fnStartAnimation();
+}
+</script>
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+  </head>
+  <body onload="init();">
+  <nav class="navbar navbar-default section-heading">
+  <div class="container-fluid"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="#">CNVS</a> </div>
+    
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a> </li>
+        <li><a href="#">OUTSIDE</a> </li>
+      </ul>
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">ENTER</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        
+        <p><a class="btn btn-default" href="https://www.instagram.com/taicanvas/?hl=en">INSTAGRAM</a></p>
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">BRANDS<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">PALACE</a> </li>
+            <li><a href="#">NIKE</a> </li>
+            <li><a href="#">ADIDAS</a> </li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">MORE</a> </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse --> 
+  </div>
+  <!-- /.container-fluid --> 
+</nav>
+
+<!-- HEADER -->
+<header>
+  <div class="jumbotron">
+    <div class="container" section-heading>
+      <div class="row">
+        <div class="col-xs-12">
+   			<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1024px; height:340px">
+				<canvas id="canvas" width="1024" height="340" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+				<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1024px; height:340px; position: absolute; left: 0px; top: 0px; display: block;">
+			</div>
+	</div>
+           </div>
+          <!--<h1 class="text-center">TAI CNVS </h1>
+          <p class="text-center">INDEPENDENT HIGH END RETAILER</p>
+          <p>&nbsp;</p>
+          <p class="text-center"><a class="btn btn-primary btn-lg section-heading" href="#" role="button ">Learn more</a> </p>-->
+        </div>
+      </div>
+    </div>
+</header>
+<!-- / HEADER --> 
+
+<!--  SECTION-1 -->
+<section>
+  <div class="row">
+    <div class="col-lg-12 page-header text-center section-heading">
+      <h2> BRANDS</h2>
+    </div>
+  </div>
+  <div class="container ">
+    <div class="row">
+      <div class="col-lg-4 col-sm-12 text-center">
+      <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/XzOHsYer/"></iframe>
+        </div>
+<h3>NIKE</h3>
+        <p>All these women want are nikeys</p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center">
+      <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/yHWGzafQ/"></iframe>
+        </div>
+<h3>ADIDAS</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center">
+      <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/gyIN6Ux7/"></iframe>
+        </div>
+<h3>A-COLD-WALL</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center">
+      <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/LDt3DHBV/"></iframe>
+        </div>
+        <h3>ALEXANDER MCQUEEN</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center">
+      <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/iS5u65PN/"></iframe>
+        </div>
+        <h3>J.W.ANDERSON</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center">
+      <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/xEQiFhnm/"></iframe>
+        </div>
+<h3>MKI</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 page-header text-center section-heading">
+        <h2>NEWS</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-lg-6">
+        <blockquote>
+          <p>
+          </p>
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://playcanv.as/p/de6qeqZv/"></iframe>
+          </div>
+          <small>Tai Canvas <cite title="Source Title">Toy Tupac</cite></small> </blockquote>
+      </div>
+      <div class="col-6 col-lg-6">
+        <blockquote>
+          <p>Raf Simons and the Olsen twins lead the cfda fashion award nominations</p>
+          <small>05 April 2017 <cite title="Source Title">Wendy Scuffet</cite></small> </blockquote>
+      </div>
+      <div class="col-6 col-lg-6">
+        <blockquote>
+          <p>Supreme joins forces with artist Mike Hill for their new collection</p>
+          <small>04 April 2017 <cite title="Source Title">Jordan Taylor</cite></small> </blockquote>
+      </div>
+      <div class="col-6 col-lg-6">
+        <blockquote>
+          <p>Supreme reveal capsule collaboration with Lacoste.</p>
+          <small>03 April 2017 <cite title="Source Title">Mike Collins</cite></small> </blockquote>
+      </div>
+    </div>
+    
+  </div>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-9 col-lg-9">
+          <p class="lead">An independent online retailer</p>
+        </div>
+        <div class=" text-center col-sm-6 col-lg-3 col-sm-offset-3 col-md-3 col-xs-offset-4 col-xs-5 col-lg-offset-0"> 
+        	<a class="btn  btn-block btn-lg btn-success" href="#" title="">Sign up now!</a> 
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- /container -->
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 page-header text-center section-heading">
+        <h2>OUR SERVICES</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-lg-4">
+        <h3>LEGAL</h3>
+        <p>Tai is committed to providing a website that is accessible to widest possible audience, regardless of technology or ability. Found out more below.</p>
+        <p><a class="btn btn-default" href="http://www.bootstraptor.com">View details »</a></p>
+      </div>
+      <div class="col-xs-6 col-lg-4">
+        <h3>CONTACT US</h3>
+        <p>If you're contacting us with any comments or queries relating to the clothing seen on this website, please click the link below.</p>
+        <p><a class="btn btn-default" href="http://www.bootstraptor.com">View details »</a></p>
+      </div>
+      <div class="col-xs-6 col-lg-4">
+        <h3>ABOUT US</h3>
+        <p>TAI CNVS is an independent online retailer. The owner 'Tai' established the business in 2016. But was previously buying and selling on other sites such Ebay and Depop. Found out more below.</p>
+        <p><a class="btn btn-default" href="http://www.bootstraptor.com">View details »</a></p>
+      </div>
+      <div class="col-xs-6 col-lg-4">
+        <h3>Subscription Information</h3>
+        <p> <em class="icon-desktop "></em> For information on how our subscription service please click below.</p>
+        <p><a class="btn btn-default" href="http://www.bootstraptor.com">View details »</a></p>
+      </div>
+      <div class="col-xs-6 col-lg-4">
+        <h3>Privacy &amp; Cookies</h3>
+        <p> <em class="icon-desktop "></em> Tai CNVS is committed to protecting the privacy and security of our customers and site vistors, including you. Found out more below.</p>
+        <p><a class="btn btn-default" href="http://www.bootstraptor.com">View details »</a></p>
+      </div>
+      <div class="col-xs-6 col-lg-4">
+        <h3>Terms &amp; Conditions</h3>
+        <p> <i class="icon-desktop "></i> Access to and use of this website and the products and services avaliable through this webite are subject to the following terms and conditions. Read more below/</p>
+        <p><a class="btn btn-default" href="http://www.bootstraptor.com">View details »</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- / CONTAINER--> 
+</section>
+<div class="well"> </div>
+
+<!-- FOOTER -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-offset-3 col-xs-12 col-lg-6">
+      <div class="jumbotron">
+        <div class="row text-center">
+          <div class="text-center col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>Join our mailing list</h2>
+          </div>
+          <div class="text-center col-lg-12"> 
+            <!-- CONTACT FORM https://github.com/jonmbake/bootstrap3-contact-form -->
+            <form role="form" id="feedbackForm" class="text-center">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                <span class="help-block" style="display: none;">Please enter your name.</span></div>
+              <div class="form-group">
+                <label for="email">E-Mail</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email Address">
+                <span class="help-block" style="display: none;">Please enter a valid e-mail address.</span></div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea rows="10" cols="100" class="form-control" id="message" name="message" placeholder="Message"></textarea>
+                <span class="help-block" style="display: none;">Please enter a message.</span></div>
+              <span class="help-block" style="display: none;">Please enter a the security code.</span>
+              <button type="submit" id="feedbackSubmit" class="btn btn-primary btn-lg" style=" margin-top: 10px;"> Send</button>
+            </form>
+            <!-- END CONTACT FORM --> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <p>Copyright © MyWebsite. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+	<script src="js/jquery-1.11.3.min.js"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed --> 
+	<script src="js/bootstrap.js"></script>
+  </body>
+</html>
